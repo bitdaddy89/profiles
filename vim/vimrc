@@ -1,0 +1,246 @@
+syntax on
+colo pablo
+
+" Flash screen instead of beep sound
+"set visualbell
+
+" Change how vim represents characters on the screen
+set encoding=utf-8
+
+" Set the encoding of files written
+set fileencoding=utf-8
+
+
+autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+autocmd Filetype go setlocal tabstop=4 shiftwidth=4 softtabstop=4
+" ts - show existing tab with 4 spaces width
+" sw - when indenting with '>', use 4 spaces width
+" sts - control <tab> and <bs> keys to match tabstop
+
+" Control all other files
+set shiftwidth=4
+
+set undofile " Maintain undo history between sessions
+set undodir=~/.vim/undodir
+
+" Hardcore mode, disable arrow keys.
+"noremap <Up> <NOP>
+"noremap <Down> <NOP>
+"noremap <Left> <NOP>
+"noremap <Right> <NOP>
+
+filetype plugin indent on
+
+" Allow backspace to delete indentation and inserted text
+" i.e. how it works in most programs
+set backspace=indent,eol,start
+" indent  allow backspacing over autoindent
+" eol     allow backspacing over line breaks (join lines)
+" start   allow backspacing over the start of insert; CTRL-W and CTRL-U
+"        stop once at the start of insert.
+
+
+" go-vim plugin specific commands
+" Also run `goimports` on your current file on every save
+" Might be be slow on large codebases, if so, just comment it out
+let g:go_fmt_command = "goimports"
+
+" Status line types/signatures.
+let g:go_auto_type_info = 1
+
+"au filetype go inoremap <buffer> . .<C-x><C-o>
+
+" If you want to disable gofmt on save
+" let g:go_fmt_autosave = 0
+
+
+" NERDTree plugin specific commands
+:nnoremap <C-g> :NERDTreeToggle<CR>
+"autocmd vimenter * NERDTree
+
+
+" air-line plugin specific commands
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+set termencoding=utf-8
+set fileencodings=ucs-bom,utf-8,cp936
+set fileencoding=utf-8
+set encoding=utf-8
+
+set nu
+
+let mapleader=";"
+nnoremap <leader>1 1gt
+nnoremap <leader>2 2gt
+
+nnoremap <leader>gds :GoDebugStart<CR>
+nnoremap <leader>gdc :GoDebugContinue<CR>
+nnoremap <leader>gdb :GoDebugBreakpoint<CR>
+nnoremap <leader>gdi :GoDebugStep<CR>
+nnoremap <leader>gdo :GoDebugStepOut<CR>
+nnoremap <leader>gdq :GoDebugStop<CR>
+nnoremap <leader>gdn :GoDebugNext<CR>
+nnoremap <leader>gdp :GoDebugPrint
+nnoremap <leader>gr :GoRun<CR>
+
+"map <silent> <F5> <Plug>MarkdownPreview
+"map <silent> <F6> <Plug>StopMarkdownPreview
+
+let &t_TI=""
+let &t_TE=""
+
+call plug#begin('~/.vim/plugged')
+Plug 'Valloric/YouCompleteMe'
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+" Markdown / Writting
+"Plug 'reedes/vim-pencil'
+"Plug 'tpope/vim-markdown'
+"Plug 'jtratner/vim-flavored-markdown'
+"Plug 'LanguageTool'
+call plug#end()
+
+
+" Markdown Syntax Support
+"augroup markdown
+"    au!
+"    au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+"augroup END
+
+" Vim-pencil Configuration
+"augroup pencil
+"  autocmd!
+"  autocmd FileType markdown,mkd call pencil#init()
+"  autocmd FileType text         call pencil#init()
+"augroup END
+
+
+
+" set to 1, nvim will open the preview window after entering the markdown buffer
+" default: 0
+let g:mkdp_auto_start = 0
+
+" set to 1, the nvim will auto close current preview window when change
+" from markdown buffer to another buffer
+" default: 1
+let g:mkdp_auto_close = 1
+
+" set to 1, the vim will refresh markdown when save the buffer or
+" leave from insert mode, default 0 is auto refresh markdown as you edit or
+" move the cursor
+" default: 0
+let g:mkdp_refresh_slow = 0
+
+" set to 1, the MarkdownPreview command can be use for all files,
+" by default it can be use in markdown file
+" default: 0
+let g:mkdp_command_for_global = 0
+
+" set to 1, preview server available to others in your network
+" by default, the server listens on localhost (127.0.0.1)
+" default: 0
+let g:mkdp_open_to_the_world = 0
+
+" use custom IP to open preview page
+" useful when you work in remote vim and preview on local browser
+" more detail see: https://github.com/iamcco/markdown-preview.nvim/pull/9
+" default empty
+let g:mkdp_open_ip = ''
+
+" specify browser to open preview page
+" default: ''
+let g:mkdp_browser = ''
+
+" set to 1, echo preview page url in command line when open preview page
+" default is 0
+let g:mkdp_echo_preview_url = 0
+
+" a custom vim function name to open preview page
+" this function will receive url as param
+" default is empty
+let g:mkdp_browserfunc = ''
+
+" options for markdown render
+" mkit: markdown-it options for render
+" katex: katex options for math
+" uml: markdown-it-plantuml options
+" maid: mermaid options
+" disable_sync_scroll: if disable sync scroll, default 0
+" sync_scroll_type: 'middle', 'top' or 'relative', default value is 'middle'
+"   middle: mean the cursor position alway show at the middle of the preview page
+"   top: mean the vim top viewport alway show at the top of the preview page
+"   relative: mean the cursor position alway show at the relative positon of the preview page
+" hide_yaml_meta: if hide yaml metadata, default is 1
+" sequence_diagrams: js-sequence-diagrams options
+" content_editable: if enable content editable for preview page, default: v:false
+" disable_filename: if disable filename header for preview page, default: 0
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1,
+    \ 'sequence_diagrams': {},
+    \ 'flowchart_diagrams': {},
+    \ 'content_editable': v:false,
+    \ 'disable_filename': 0
+    \ }
+
+" use a custom markdown style must be absolute path
+" like '/Users/username/markdown.css' or expand('~/markdown.css')
+let g:mkdp_markdown_css = ''
+
+" use a custom highlight style must absolute path
+" like '/Users/username/highlight.css' or expand('~/highlight.css')
+let g:mkdp_highlight_css = ''
+
+" use a custom port to start server or random for empty
+let g:mkdp_port = ''
+
+" preview page title
+" ${name} will be replace with the file name
+let g:mkdp_page_title = '「${name}」'
+
+" recognized filetypes
+" these filetypes will have MarkdownPreview... commands
+let g:mkdp_filetypes = ['markdown']
+
+" example
+nmap <C-s> <Plug>MarkdownPreview
+nmap <M-s> <Plug>MarkdownPreviewStop
+nmap <C-p> <Plug>MarkdownPreviewToggle
+
+
+
+
+"ycm VS snippets conflictions
+"let g:ycm_key_list_select_completion = ['<Tab>']
+"let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+"let g:SuperTabDefaultCompletionType = '<Tab>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "n"
+let g:UltiSnipsJumpForwardTrigger = "n"
+let g:UltiSnipsJumpBackwardTrigger = "p"
